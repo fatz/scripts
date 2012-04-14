@@ -8,6 +8,7 @@ function growl_notify() {
 	kind=$2
 	/usr/local/bin/growlnotify -a /System/Library/PreferencePanes/Network.prefPane -m "$message" $kind
 }
+
 function growl_success() {
 	message=$1
 	kind="Success"
