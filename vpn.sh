@@ -1,4 +1,14 @@
 #!/bin/bash
+#
+# Tiny little shell wrapper to toggle between VPN connection statuses and Network locations
+#
+# Usage: vpn.sh {start|stop}
+#
+# (C) 2012 Michael Ehrenreich
+#
+# TODO:
+# - add "toggle" switch
+# - therefore: add methods to determine current connection status and current location name
 
 location_name="VPN"
 vpn_name="VPN (Cisco IPSec) 2"
@@ -8,6 +18,7 @@ function growl_notify() {
 	kind=$2
 	/usr/local/bin/growlnotify -a /System/Library/PreferencePanes/Network.prefPane -m "$message" $kind
 }
+
 function growl_success() {
 	message=$1
 	kind="Success"
@@ -81,5 +92,3 @@ case "$1" in
 		exit
 		;;
 esac
-		
-		
