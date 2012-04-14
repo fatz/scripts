@@ -3,6 +3,23 @@
 location_name="VPN"
 vpn_name="VPN (Cisco IPSec) 2"
 
+function growl_notify() {
+	message=$1
+	kind=$2
+	/usr/local/bin/growlnotify -a /System/Library/PreferencePanes/Network.prefPane -m "$message" $kind
+}
+function growl_success() {
+	message=$1
+	kind="Success"
+	growl_notify "$message" $kind
+}
+
+function growl_error() {
+	message=$1
+	kind="Error"
+	growl_notify "$message" $kind
+}
+
 function change_location() {
 	location_name=$1
 	scselect $location_name >/dev/null
@@ -44,14 +61,18 @@ case "$1" in
 		if change_location $location_name ; then
 			sleep 4 # waiting for location change to finish
 			if connect_vpn $vpn_name ; then
-				echo "OK"
+				growl_success "Connected to $vpn_name"
+			else
+				growl_error "Cannot connect to $vpn_name"
 			fi
 		fi
 		;;
 	off|stop)
 		if change_location "Automatic" ; then
 			if disconnect_vpn $vpn_name ; then
-				echo "OK"
+				growl_success "Disconnected from $vpn_name"
+			else
+				growl_error "Cannot disconnect from $vpn_name"
 			fi
 		fi
 		;;
